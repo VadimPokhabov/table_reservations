@@ -1,0 +1,27 @@
+{% extends 'reservation/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <div class="col-9">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h2 class="my-0 fw-normal">Стол номер {{ table.table }}</h2>
+                    <h3 class="my-0 fw-normal">На {{ table.seats }} персоны</h3>
+                </div>
+                <div class="card-body">
+                    <h5>{{ object.content }}</h5>
+                    <p>{{ object.recipients }}</p>
+                    {% if user == object.owner or user.is_superuser %}
+                    <a class="btn btn-primary" href="{% url 'reservation:edit' object.pk %}" role="button">Изменить</a>
+                    <a class="btn btn-primary" href="{% url 'reservation:delete' object.pk %}" role="button">Удалить</a>
+                    {% endif %}
+                    <a class="btn btn-lg btn-secondary fw-bold border-white bg-black"
+                       href="{% url 'reservation:reservation' %}" role="button">Зарезервировать</a>
+                    <a class="btn btn-lg btn-secondary fw-bold border-white bg-black"
+                       href="{% url 'reservation:table_list' %}" role="button">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
