@@ -1,24 +1,17 @@
+from django.contrib.auth.views import LogoutView
 from django.urls import path
-from rest_framework.permissions import AllowAny
-from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from users.apps import UsersConfig
-from users.views import UserViewSet
+from users.views import UserCreateView, email_verification, reset_password, ProfileView, UserLoginView
 
 app_name = UsersConfig.name
 
-router = DefaultRouter()
-router.register(r"users", UserViewSet, basename="users")
+
 urlpatterns = [
-    path(
-        "token/",
-        TokenObtainPairView.as_view(permission_classes=[AllowAny]),
-        name="token_obtain_pair",
-    ),
-    path(
-        "token/refresh/",
-        TokenRefreshView.as_view(permission_classes=[AllowAny]),
-        name="token_refresh",
-    ),
-] + router.urls
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', UserCreateView.as_view(), name='register'),
+    path('email_confirm/<str:token>/', email_verification, name='email_confirm'),
+    path("profile/", ProfileView.as_view(), name="profile"),
+    path('reset_password/', reset_password, name='reset_password'),
+]
