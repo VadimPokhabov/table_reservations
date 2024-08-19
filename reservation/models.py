@@ -16,7 +16,7 @@ class Table(models.Model):
         verbose_name_plural = 'Столы'
 
     def __str__(self):
-        return self.table
+        return f'{self.table}'
 
 
 class Reservation(models.Model):
@@ -34,4 +34,4 @@ class Reservation(models.Model):
         verbose_name_plural = 'Бронирование'
 
     def __str__(self):
-        return f'{self.table}, {self.owner}'
+        return f'Стол номер {self.table}, клиент {self.first_name} {self.last_name}, {self.owner}'
