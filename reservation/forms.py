@@ -14,7 +14,7 @@ class TableForms(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Table
-        fields = ('table', 'seats')
+        fields = ('table', 'seats', 'image')
 
 
 class ReservationForm(StyleFormMixin, forms.ModelForm):
@@ -26,7 +26,8 @@ class ReservationForm(StyleFormMixin, forms.ModelForm):
 
     class Meta:
         model = Reservation
-        fields = ['first_name',
+        fields = ['first_name', 'last_name',
+                  'table',
                   'email', 'time_reserved',
                   'date_reserved']
 
