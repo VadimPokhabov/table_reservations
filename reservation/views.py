@@ -49,13 +49,13 @@ class ReservationListView(ListView):
     model = Reservation
     title = 'Бронирование'
 
-    def get_queryset(self, args, **kwargs):
-        """
-        Отображает только доступные к брони столики.
-        """
-        queryset = super().get_queryset(args, **kwargs)
-        queryset = queryset.filter(is_booked=False)
-        return queryset
+    # def get_queryset(self, args, **kwargs):
+    #     """
+    #     Отображает только доступные к брони столики.
+    #     """
+    #     queryset = super().get_queryset(args, **kwargs)
+    #     queryset = queryset.filter(is_booked=False)
+    #     return queryset
 
 
 class ReservationCreateView(LoginRequiredMixin, CreateView):
@@ -70,35 +70,30 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
         new_reservate.save()
         super().form_valid(form)
         return redirect('/')
-        # send a flash message to the user
-        # messages.success(
-        #     self.request,
-        #     "Вы успешно забронировали новый столик ")
-        # redirect the user back to his/her dashboard
 
 
 class AboutRestoTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'reservation/about_restaurant.html'
 
 
-class UpdateReservation(LoginRequiredMixin, UpdateView):
-    """Admin user updates all the reservation."""
-    form_class = ReservationUpdateForm
-    template_name = "super/update_reserve.html"
-    model = Reservation
-
-    def get_object(self, *args, **kwargs):
-        obj = get_object_or_404(Reservation, pk=self.kwargs['pk'])
-        return obj
-
-    def form_valid(self, form):
-        val = form.cleaned_data['status']
-        form.save()
-        messages.success(
-            self.request, "you have successfully updated the reservation")
-        if val == "confirmed":
-            return redirect('orders:reservation_status', pk=self.kwargs['pk'])
-        return redirect('/dashboard')
+# class UpdateReservation(LoginRequiredMixin, UpdateView):
+#     """Admin user updates all the reservation."""
+#     form_class = ReservationUpdateForm
+#     template_name = "super/update_reserve.html"
+#     model = Reservation
+#
+#     def get_object(self, *args, **kwargs):
+#         obj = get_object_or_404(Reservation, pk=self.kwargs['pk'])
+#         return obj
+#
+#     def form_valid(self, form):
+#         val = form.cleaned_data['status']
+#         form.save()
+#         messages.success(
+#             self.request, "you have successfully updated the reservation")
+#         if val == "confirmed":
+#             return redirect('orders:reservation_status', pk=self.kwargs['pk'])
+#         return redirect('/dashboard')
 
 
 class ContactsTemplateView(TemplateView):
