@@ -137,3 +137,6 @@ if CACHE_ENABLED:
             "LOCATION": os.getenv('CACHE_LOCATION'),
         }
     }
+
+# Фидбек от пользователя тут
+FEEDBACK_FILE_PATH = BASE_DIR.joinpath('feedback.txt')
