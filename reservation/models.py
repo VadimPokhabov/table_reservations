@@ -7,8 +7,10 @@ NULLABLE = {"blank": True, "null": True}
 class Table(models.Model):
     table = models.IntegerField(primary_key=True, help_text='Укажите номер стола', verbose_name='Номер стола')
     seats = models.IntegerField(help_text='Количество мест', verbose_name='Количество мест')
-    min_people = models.IntegerField(help_text='Введите минимальное количество людей', verbose_name='Минимум человек', **NULLABLE)
-    max_people = models.IntegerField(help_text='Введите максимальное количество людей', verbose_name='Максимум человек', **NULLABLE)
+    min_people = models.IntegerField(help_text='Введите минимальное количество людей', verbose_name='Минимум человек',
+                                     **NULLABLE)
+    max_people = models.IntegerField(help_text='Введите максимальное количество людей', verbose_name='Максимум человек',
+                                     **NULLABLE)
     image = models.ImageField(upload_to='reservation/', verbose_name='Изображение', **NULLABLE)
 
     class Meta:
@@ -22,7 +24,7 @@ class Table(models.Model):
 class Reservation(models.Model):
     first_name = models.CharField(max_length=200, help_text='Укажите Имя', verbose_name='Имя', **NULLABLE)
     last_name = models.CharField(max_length=200, help_text='Укажите Фамилию', verbose_name='Фамилия', **NULLABLE)
-    email = models.EmailField(verbose_name='Ваш email',**NULLABLE)
+    email = models.EmailField(verbose_name='Ваш email', **NULLABLE)
     table = models.ForeignKey(Table, on_delete=models.CASCADE, verbose_name='Номер стола', **NULLABLE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE)
     time_reserved = models.TimeField(help_text='Укажите время', verbose_name='Время бронирования', **NULLABLE)
