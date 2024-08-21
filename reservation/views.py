@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from reservation.forms import TableForms, ReservationForm, ReservationUpdateForm
 from reservation.models import Table, Reservation
+from reservation.users_cases import save_feedback
 
 
 class TableTemplateView(LoginRequiredMixin, TemplateView):
@@ -53,7 +54,7 @@ class ReservationListView(ListView):
         Отображает только доступные к брони столики.
         """
         queryset = super().get_queryset(args, **kwargs)
-        queryset = queryset.filter(is_booked=True)
+        queryset = queryset.filter(is_booked=False)
         return queryset
 
 
@@ -67,7 +68,8 @@ class ReservationCreateView(LoginRequiredMixin, CreateView):
         new_reservate = form.save(commit=False)
         new_reservate.owner = self.request.user
         new_reservate.save()
-        return super().form_valid(form)
+        super().form_valid(form)
+        return redirect('/')
         # send a flash message to the user
         # messages.success(
         #     self.request,
@@ -97,3 +99,21 @@ class UpdateReservation(LoginRequiredMixin, UpdateView):
         if val == "confirmed":
             return redirect('orders:reservation_status', pk=self.kwargs['pk'])
         return redirect('/dashboard')
+
+
+class ContactsTemplateView(TemplateView):
+    template_name = "reservation/contacts.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Контакты"
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            save_feedback(
+                name=request.POST.get('name'),
+                phone=request.POST.get('phone'),
+                message=request.POST.get('message')
+            )
+        return HttpResponseRedirect(reverse('reservation:contacts'))
