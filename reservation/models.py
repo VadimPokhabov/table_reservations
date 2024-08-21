@@ -27,6 +27,7 @@ class Reservation(models.Model):
     email = models.EmailField(verbose_name='Ваш email', **NULLABLE)
     table = models.ForeignKey(Table, on_delete=models.CASCADE, verbose_name='Номер стола', **NULLABLE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE)
+    phone = models.CharField(max_length=35, verbose_name="Телефон", **NULLABLE, help_text="Введите номер телефона")
     time_reserved = models.TimeField(help_text='Укажите время', verbose_name='Время бронирования', **NULLABLE)
     date_reserved = models.DateField(help_text='Укажите дату', verbose_name='Дата бронирования', **NULLABLE)
     is_booked = models.BooleanField(default=False, verbose_name='Признак брони')
