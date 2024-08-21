@@ -28,7 +28,7 @@ class ReservationForm(StyleFormMixin, forms.ModelForm):
         model = Reservation
         fields = ['first_name', 'last_name',
                   'table',
-                  'email', 'time_reserved',
+                  'email', 'phone', 'time_reserved',
                   'date_reserved']
 
 
