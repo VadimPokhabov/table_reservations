@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from users.models import User
 
@@ -36,5 +37,26 @@ class Reservation(models.Model):
         verbose_name = 'Бронирование'
         verbose_name_plural = 'Бронирование'
 
+        # unique_together = ('time_reserved', 'date_reserved','table')
+        constraints = [
+            models.UniqueConstraint(fields=['time_reserved', 'date_reserved', 'table'], name='name of constraint')
+        ]
+
     def __str__(self):
         return f'Стол номер {self.table}, клиент {self.first_name} {self.last_name}, {self.owner}'
+
+
+# class ReservedConstraint(models.UniqueConstraint):
+#     def validate(self, model, instance, exclude=None, using="default"):
+#         super().validate(model, instance, exclude=exclude, using=using)
+#
+#         res = model.objects.filter(
+#             time_reserved=instance.time_reserved,
+#             date_reserved=instance.date_reserved,
+#             table=instance.table,
+#             is_booked=True
+#         ).exists()
+#
+#         if res:
+#             raise ValidationError('Такое бронирование уже существует')
+#
